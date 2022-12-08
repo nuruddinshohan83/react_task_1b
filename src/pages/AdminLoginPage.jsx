@@ -8,7 +8,7 @@ import { AuthContext } from "../authContext"
 import SnackBar from "../components/SnackBar"
 import { showToast, GlobalContext } from "../globalContext"
 const AdminLoginPage = () => {
-    const { state, dispatch } = useContext(GlobalContext)
+    const { state, dispatch: dispatchGlobal } = useContext(GlobalContext)
     const schema = yup
         .object({
             email: yup.string().email().required(),
@@ -16,7 +16,7 @@ const AdminLoginPage = () => {
         })
         .required()
 
-    //const { dispatch  } = React.useContext(AuthContext)
+    const { dispatch: dispatchAuth } = React.useContext(AuthContext)
     const navigate = useNavigate()
     const {
         register,
@@ -30,7 +30,8 @@ const AdminLoginPage = () => {
     const onSubmit = async (data) => {
         let sdk = new MkdSDK()
         sdk.login(data.email, data.password, "admin").then((res) => {
-            showToast(dispatch, "LoggedIn", 3000)
+            dispatchAuth({ type: "LOGIN", payload: res })
+            showToast(dispatchGlobal, "LoggedIn", 3000)
         })
     }
 

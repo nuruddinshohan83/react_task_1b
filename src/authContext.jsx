@@ -1,63 +1,68 @@
-import React, { useReducer } from "react";
-import MkdSDK from "./utils/MkdSDK";
+import React, { useReducer } from "react"
+import MkdSDK from "./utils/MkdSDK"
 
-export const AuthContext = React.createContext();
+export const AuthContext = React.createContext()
 
 const initialState = {
-  isAuthenticated: false,
-  user: null,
-  token: null,
-  role: null,
-};
+    isAuthenticated: false,
+    user: null,
+    token: null,
+    role: null,
+}
 
 const reducer = (state, action) => {
-  switch (action.type) {
-    case "LOGIN":
-      //TODO
-      return {
-        ...state,
-      };
-    case "LOGOUT":
-      localStorage.clear();
-      return {
-        ...state,
-        isAuthenticated: false,
-        user: null,
-      };
-    default:
-      return state;
-  }
-};
+    switch (action.type) {
+        case "LOGIN":
+            //TODO
+            return {
+                ...state,
+                isAuthenticated: true,
+                role: action.payload.role,
+                token: action.payload.token,
+                user: action.payload.user_id,
+            }
+        case "LOGOUT":
+            localStorage.clear()
+            return {
+                ...state,
+                isAuthenticated: false,
+                user: null,
+            }
+        default:
+            return state
+    }
+}
 
-let sdk = new MkdSDK();
+let sdk = new MkdSDK()
 
 export const tokenExpireError = (dispatch, errorMessage) => {
-  const role = localStorage.getItem("role");
-  if (errorMessage === "TOKEN_EXPIRED") {
-    dispatch({
-      type: "Logout",
-    });
-    window.location.href = "/" + role + "/login";
-  }
-};
+    const role = localStorage.getItem("role")
+    if (errorMessage === "TOKEN_EXPIRED") {
+        dispatch({
+            type: "Logout",
+        })
+        window.location.href = "/" + role + "/login"
+    }
+}
 
 const AuthProvider = ({ children }) => {
-  const [state, dispatch] = useReducer(reducer, initialState);
+    const [state, dispatch] = useReducer(reducer, initialState)
 
-  React.useEffect(() => {
-    //TODO
-  }, []);
+    // React.useEffect(() => {
+    //     //TODO
+    //     console.log(state)
+    // }, [state])
 
-  return (
-    <AuthContext.Provider
-      value={{
-        state,
-        dispatch,
-      }}
-    >
-      {children}
-    </AuthContext.Provider>
-  );
-};
+    return (
+        <AuthContext.Provider
+            value={{
+                state,
+                dispatch,
+            }}
+        >
+            {children}
+        </AuthContext.Provider>
+    )
+}
 
-export default AuthProvider;
+export default AuthProvider
