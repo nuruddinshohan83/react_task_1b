@@ -50,23 +50,25 @@ export default function MkdSDK() {
 
     this.callRestAPI = async function (payload, method) {
         const header = {
-            "Content-Type": "application/json",
             "x-project": base64Encode,
-            Authorization: "Bearer " + localStorage.getItem("token"),
+            Authorization:
+                "Bearer " + JSON.parse(localStorage.getItem("token")),
+            "Content-Type": "application/json",
         }
+        console.log(localStorage.getItem("token"))
 
         switch (method) {
             case "GET":
                 const getResult = await fetch(
                     this._baseurl + `/v1/api/rest/${this._table}/GET`,
                     {
-                        method: "post",
-                        headers: header,
+                        method: "POST",
                         body: JSON.stringify(payload),
+                        headers: header,
                     }
                 )
                 const jsonGet = await getResult.json()
-
+                console.log(jsonGet)
                 if (getResult.status === 401) {
                     throw new Error(jsonGet.message)
                 }
@@ -92,7 +94,7 @@ export default function MkdSDK() {
                     }
                 )
                 const jsonPaginate = await paginateResult.json()
-
+                console.log(jsonPaginate)
                 if (paginateResult.status === 401) {
                     throw new Error(jsonPaginate.message)
                 }
@@ -110,7 +112,8 @@ export default function MkdSDK() {
         let headersList = {
             "Content-Type": "application/json",
             "x-project": base64Encode,
-            Authorization: "Bearer " + localStorage.getItem("token"),
+            Authorization:
+                "Bearer " + JSON.parse(localStorage.getItem("token")),
         }
 
         let bodyContent = JSON.stringify({

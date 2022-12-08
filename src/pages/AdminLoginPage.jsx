@@ -33,6 +33,7 @@ const AdminLoginPage = () => {
             dispatchAuth({ type: "LOGIN", payload: res })
             navigate("/admin/dashboard")
             localStorage.setItem("token", JSON.stringify(res.token))
+            localStorage.setItem("role", JSON.stringify(res.role))
             showToast(dispatchGlobal, "LoggedIn", 3000)
         })
     }
