@@ -55,7 +55,7 @@ export default function MkdSDK() {
                 "Bearer " + JSON.parse(localStorage.getItem("token")),
             "Content-Type": "application/json",
         }
-        console.log(localStorage.getItem("token"))
+        console.log(payload)
 
         switch (method) {
             case "GET":
@@ -85,6 +85,7 @@ export default function MkdSDK() {
                 if (!payload.limit) {
                     payload.limit = 10
                 }
+                console.log(payload)
                 const paginateResult = await fetch(
                     this._baseurl + `/v1/api/rest/${this._table}/${method}`,
                     {
