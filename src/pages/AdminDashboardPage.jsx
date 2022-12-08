@@ -1,10 +1,15 @@
 import React from "react"
+import Cell from "../components/Cell"
+import LeaderBoard from "../components/LeaderBoard"
+import NavBar from "../components/NavBar"
 
 const AdminDashboardPage = () => {
     return (
         <>
-            <div className="w-full flex justify-center items-center text-7xl h-screen text-gray-700 ">
-                Dashboard
+            <div className="w-full h-screen text-white bg-background px-12 py-6 ">
+                <NavBar></NavBar>
+                <LeaderBoard></LeaderBoard>
+                <Cell></Cell>
             </div>
         </>
     )
