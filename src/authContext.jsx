@@ -47,10 +47,15 @@ export const tokenExpireError = (dispatch, errorMessage) => {
 const AuthProvider = ({ children }) => {
     const [state, dispatch] = useReducer(reducer, initialState)
 
-    // React.useEffect(() => {
-    //     //TODO
-    //     console.log(state)
-    // }, [state])
+    React.useEffect(() => {
+        //TODO
+        state.isAuthenticated
+            ? sdk.check(state.role).catch((err) => {
+                  dispatch({ type: "LOGOUT" })
+              })
+            : null
+        // console.log(state)
+    }, [])
 
     return (
         <AuthContext.Provider
