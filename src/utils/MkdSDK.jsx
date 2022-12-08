@@ -1,10 +1,15 @@
+import { useContext } from "react"
+import AuthProvider from "../authContext"
 export default function MkdSDK() {
     this._baseurl = "https://reacttask.mkdlabs.com"
+
     this._project_id = "reacttask"
     this._secret = "d9hedycyv6p7zw8xi34t9bmtsjsigy5t7"
     this._table = ""
     this._custom = ""
     this._method = ""
+    let authContextData = useContext(AuthProvider)
+    this._token = authContextData.token
 
     const raw = this._project_id + ":" + this._secret
     let base64Encode = btoa(raw)
