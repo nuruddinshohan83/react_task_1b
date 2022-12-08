@@ -1,10 +1,15 @@
+import { useContext } from "react"
+import AuthProvider from "../authContext"
 export default function MkdSDK() {
     this._baseurl = "https://reacttask.mkdlabs.com"
+
     this._project_id = "reacttask"
     this._secret = "d9hedycyv6p7zw8xi34t9bmtsjsigy5t7"
     this._table = ""
     this._custom = ""
     this._method = ""
+    let authContextData = useContext(AuthProvider)
+    this._token = authContextData.token
 
     const raw = this._project_id + ":" + this._secret
     let base64Encode = btoa(raw)
@@ -16,8 +21,7 @@ export default function MkdSDK() {
     this.login = async function (email, password, role) {
         //A login function using JS fetch
         let headersList = {
-            "x-project":
-                "cmVhY3R0YXNrOmQ5aGVkeWN5djZwN3p3OHhpMzR0OWJtdHNqc2lneTV0Nw==",
+            "x-project": base64Encode,
             "Content-Type": "application/json",
         }
 
@@ -27,16 +31,13 @@ export default function MkdSDK() {
             role: role,
         })
 
-        let response = await fetch(
-            "https://reacttask.mkdlabs.com/v2/api/lambda/login",
-            {
-                method: "POST",
-                body: bodyContent,
-                headers: headersList,
-            }
-        )
+        let response = await fetch(this._baseurl + "/v2/api/lambda/login", {
+            method: "POST",
+            body: bodyContent,
+            headers: headersList,
+        })
 
-        let data = await response.text()
+        let data = await response.json()
         return data
     }
 
@@ -110,7 +111,24 @@ export default function MkdSDK() {
     }
 
     this.check = async function (role) {
-        //TODO
+        let headersList = {
+            "Content-Type": "application/json",
+            "x-project": base64Encode,
+            Authorization: "Bearer " + localStorage.getItem("token"),
+        }
+
+        let bodyContent = JSON.stringify({
+            role: role,
+        })
+
+        let response = await fetch(this._baseurl + "/v2/api/lambda/check", {
+            method: "POST",
+            body: bodyContent,
+            headers: headersList,
+        })
+
+        let data = await response.json()
+        return data
     }
 
     return this
