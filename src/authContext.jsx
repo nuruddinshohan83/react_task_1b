@@ -13,7 +13,6 @@ const initialState = {
 const reducer = (state, action) => {
     switch (action.type) {
         case "LOGIN":
-            //TODO
             return {
                 ...state,
                 isAuthenticated: true,

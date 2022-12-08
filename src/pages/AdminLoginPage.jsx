@@ -31,6 +31,8 @@ const AdminLoginPage = () => {
         let sdk = new MkdSDK()
         sdk.login(data.email, data.password, "admin").then((res) => {
             dispatchAuth({ type: "LOGIN", payload: res })
+            navigate("/admin/dashboard")
+            localStorage.setItem("token", JSON.stringify(res.token))
             showToast(dispatchGlobal, "LoggedIn", 3000)
         })
     }
