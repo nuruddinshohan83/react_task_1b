@@ -27,7 +27,7 @@ const AdminLoginPage = () => {
 
     const onSubmit = async (data) => {
         let sdk = new MkdSDK()
-        sdk.login(data)
+        console.log(sdk.login(data.email, data.password, "admin"))
     }
 
     return (
@@ -46,6 +46,7 @@ const AdminLoginPage = () => {
                     <input
                         type="email"
                         placeholder="Email"
+                        value="adminreacttask@manaknight.com"
                         {...register("email")}
                         className={`"shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline ${
                             errors.email?.message ? "border-red-500" : ""
@@ -65,6 +66,7 @@ const AdminLoginPage = () => {
                     </label>
                     <input
                         type="password"
+                        value={"a123456"}
                         placeholder="******************"
                         {...register("password")}
                         className={`shadow appearance-none border  rounded w-full py-2 px-3 text-gray-700 mb-3 leading-tight focus:outline-none focus:shadow-outline ${
