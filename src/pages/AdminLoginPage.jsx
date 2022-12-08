@@ -1,12 +1,14 @@
-import React from "react"
+import React, { useContext } from "react"
 import { useForm } from "react-hook-form"
 import { yupResolver } from "@hookform/resolvers/yup"
 import * as yup from "yup"
 import MkdSDK from "../utils/MkdSDK"
 import { useNavigate } from "react-router-dom"
 import { AuthContext } from "../authContext"
-
+import SnackBar from "../components/SnackBar"
+import { showToast, GlobalContext } from "../globalContext"
 const AdminLoginPage = () => {
+    const { state, dispatch } = useContext(GlobalContext)
     const schema = yup
         .object({
             email: yup.string().email().required(),
@@ -14,7 +16,7 @@ const AdminLoginPage = () => {
         })
         .required()
 
-    const { dispatch } = React.useContext(AuthContext)
+    //const { dispatch  } = React.useContext(AuthContext)
     const navigate = useNavigate()
     const {
         register,
@@ -27,11 +29,14 @@ const AdminLoginPage = () => {
 
     const onSubmit = async (data) => {
         let sdk = new MkdSDK()
-        console.log(sdk.login(data.email, data.password, "admin"))
+        sdk.login(data.email, data.password, "admin").then((res) => {
+            showToast(dispatch, "LoggedIn", 3000)
+        })
     }
 
     return (
         <div className="w-full max-w-xs mx-auto">
+            <SnackBar></SnackBar>
             <form
                 onSubmit={handleSubmit(onSubmit)}
                 className="bg-white shadow-md rounded px-8 pt-6 pb-8 mb-4 mt-8 "
