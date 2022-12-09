@@ -1,18 +1,21 @@
-import AuthProvider from "./authContext";
-import GlobalProvider from "./globalContext";
-import { BrowserRouter as Router } from "react-router-dom";
-import Main from "./main";
-
+import AuthProvider from "./authContext"
+import GlobalProvider from "./globalContext"
+import { BrowserRouter as Router } from "react-router-dom"
+import Main from "./main"
+import { HTML5Backend } from "react-dnd-html5-backend"
+import { DndProvider } from "react-dnd"
 function App() {
-  return (
-    <AuthProvider>
-      <GlobalProvider>
-        <Router>
-          <Main />
-        </Router>
-      </GlobalProvider>
-    </AuthProvider>
-  );
+    return (
+        <AuthProvider>
+            <GlobalProvider>
+                <DndProvider backend={HTML5Backend}>
+                    <Router>
+                        <Main />
+                    </Router>
+                </DndProvider>
+            </GlobalProvider>
+        </AuthProvider>
+    )
 }
 
-export default App;
+export default App
